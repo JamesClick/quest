@@ -1,0 +1,4 @@
+# Both are included due to inconsistencies in build provider contexts.
+# Needed in order to allow docker build at synth time to not catch fire.
+cdk.out/
+aws-infra/cdk.out/
