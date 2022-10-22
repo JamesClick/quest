@@ -1,65 +1,41 @@
 # A quest in the clouds
 
-### Q. What is this quest?
+### Submitted Assets
+ - Repo: [https://github.com/lastnameclick/quest/](https://github.com/lastnameclick/quest/) (IaC is under `aws-infra/` subdir)
+ - Hosted Quest Webapp: [https://QuestA-Quest-9Hsswy5iJ53b-344333617.us-west-1.elb.amazonaws.com](https://QuestA-Quest-9Hsswy5iJ53b-344333617.us-west-1.elb.amazonaws.com)
+ - Screenshot of hosted Quest webapp: ![Screenshot of Quest Webapp as documented proof](quest-proof.jpg)
+  - Given more time, I would improve:
+    - Testing (or lack thereof), for both the webapp and the CDK Stack. For production use, both unit and behavioral testing is essential to an effective deployment of CDK for IaC. Catching simple formatting errors to logically impossible stack updates, the use of local and continuous testing allow for quick, confident changes in multi-contributor envrionments. For this project, it was omitted mainly omitted due to time constraints and also the nature of how the webapp is built--utilizing blobs for the hosted logic and content.
+    - Continuous testing/ deployment verification. Implementation of testing would also enable having testing present in deployment pipelines, something that I would always include where possible. It would also partially enable app-deployment verification, allowing for stronger pipeline reliability.
+    - Future-proofing. Making the stack design resiliant to future changes is an important consideration. While it could be considered resiliant in it's current form, first thing that comes to mind would to genericize ARN and Account ID references (Both in CDK Context and infrastructure definition).
+    - Compute cluster configuration. Further definition of the cluster config (eg, defining instance types, creating a compute provision strategy for cost control) enables finer control of performance utilization costs.
+    - Automate certificate management. While it would be possible to run self-signed certificate creation and renewal from CDK, it wouldn't be considered "guaranteed" since it'll be using methods outside of the CDK library (which could cause issues at deployment). An alternative solution is to implement a Lambda that would invoke at CDK deploy time that checks if a valid certificate exists, and creates/renews said certificate if found invalid (this would also allow time-based renewal invokations).
 
-It is a fun way to assess your cloud skills. It is also a good representative sample of the work we do at Rearc. Quest is a webapp made with node.js and golang.
+### Known Issues
+ - Selfsigned certificate generation is not automated (see below)
+ - Initial deployment requires use of Docker Buildx when on ARM64 systems (see below)
+ - Automated certificate renewal is not in place.
+ - Webapp binary makes broken calls to analytics/pixel tracking services/webfonts
 
-### Q. So what skills should I have ?
-Public cloud (AWS, GCP, Azure). More than one cloud is a "good to have" but one is a "must have". General cloud concepts, especially networking. Docker (containerization). IaC (Infrastructure as code). Linux/Unix. Git. TLS certs is a plus.
+### Self-signed Certificate management
+ELB will not generate a self-signed certificate. You must generate one locally then upload it to ACM.
+```bash
+# Generate Private Key if not already created:
+openssl genrsa 2048 > privatekey.pem
 
-### Q. What do I have to do ?
-You may do all or some of the following tasks. Please read over the complete list before starting.
+# Request new certificate:
+openssl req -new -x509 -nodes -sha256 -days 365 -key privatekey.pem -outform PEM -out amazonawsselfsigned.pem
 
-1. If you know how to use git, start a git repository (local-only is acceptable) and commit all of your work to it.
-2. Deploy the app in any public cloud and navigate to the index page. Use Linux 64-bit x86/64 as your OS (Amazon Linux preferred in AWS, Similar Linux flavor preferred in GCP and Azure)
-3. Deploy the app in a Docker container. Use `node` as the base image. Version `node:10` or later should work.
-4. Inject an environment variable (`SECRET_WORD`) in the Docker container. The value of `SECRET_WORD` should be the secret word discovered on the index page of the application.
-5. Deploy a load balancer in front of the app.
-6. Use Infrastructure as Code (IaC) to "codify" your deployment. Terraform is ideal, but use whatever you know, e.g. CloudFormation, CDK, Deployment Manager, etc.
-7. Add TLS (https). You may use locally-generated certs.
+# Upload new certificate to ACM. Returns CertificateArn for use in CDK stack:
+aws acm import-certificate --certificate file://amazonawsselfsigned.pem --private-key file://privatekey.pem
+```
 
-### Q. How do I know I have solved these stages?
-Each stage can be tested as follows (where `<ip_or_host>` is the location where the app is deployed):
+### Initial Deployment on ARM
+_Tested on Apple Silicon, unsure if Windows On Arm utilizes the same commands._
 
-1. Public cloud & index page (contains the secret word) - `http(s)://<ip_or_host>[:port]/`
-2. Docker check - `http(s)://<ip_or_host>[:port]/docker`
-3. Secret Word check - `http(s)://<ip_or_host>[:port]/secret_word`
-4. Load Balancer check  - `http(s)://<ip_or_host>[:port]/loadbalanced`
-5. TLS check - `http(s)://<ip_or_host>[:port]/tls`
-
-### Q. Do I have to do all these?
-You may do whichever, and however many, of the tasks above as you'd like. We suspect that once you start, you won't be able to stop. It's addictive. Extra credit if you are able to submit working entries for more than one cloud provider.
-
-### Q. What do I have to submit?
-1. Your work assets, as one or both of the following:
-  - A link to a hosted git repository.
-  - A ZIP file containing your project directory. Include the `.git` sub-directory if you used git.
-2. Proof of completion, as one or both of the following:
-  - Link(s) to hosted public cloud deployment(s).
-  - One or more screenshots showing, at least, the index page of the final deployment in one or more public cloud(s) you have chosen.
-3. An answer to the prompt: "Given more time, I would improve..."
-  - Discuss any shortcomings/immaturities in your solution and the reasons behind them (lack of time is a perfectly fine reason!)
-  - **This may carry as much weight as the code itself**
-
-Your work assets should include:
-
-- IaC files, if you completed that task.
-- One or more Dockerfiles, if you completed that task.
-- A sensible README or other file(s) that contain instructions, notes, or other written documentation to help us review and assess your submission.
-
-### Q. How long do I need to host my submission on public cloud(s)?
-You don't have to at all if you don't want to. You can run it in public cloud(s), grab a screenshot, then tear it all down to avoid costs.
-
-If you _want_ to host it longer for us to view it, we recommend taking a screenshot anyway and sending that along with the link. Then you can tear down the quest whenever you want and we'll still have the screenshot. We recommend waiting no longer than one week after sending us the link before tearing it down.
-
-### Q. What if I successfully complete all the challenges?
-We have many more for you to solve as a member of the Rearc team!
-
-### Q. What if I find a bug?
-Awesome! Tell us you found a bug along with your submission and we'll talk more!
-
-### Q. What if I fail?
-There is no fail. Complete whatever you can and then submit your work. Doing _everything_ in the quest is not a guarantee that you will "pass" the quest, just like not doing something is not a guarantee you will "fail" the quest.
-
-### Q. Can I share this quest with others?
-No.
+Containers built with `linux/arm64` systems are not supported on AWS Fargate, which is used by Quest for Web.
+r
+Workaround: First setup Docker Buildx to your liking, being sure to include a `linux/amd64` option. Set the Envrionment Vaiable to use that container type. This is not an issue for the stack pipeline post inital deployment.
+```bash
+export DOCKER_DEFAULT_PLATFORM='linux/amd64'
+``` 

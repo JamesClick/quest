@@ -1,0 +1,44 @@
+# MACOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# DO NOT REMOVE ANY BELOW LINEBREAKS
+Icon
+
+
+# DO NOT REMOVE ANY ABOVE LINEBREAKS 
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+*.icloud
+
+
+# NODEJS (Mostly for CDK Lib)
+node_modules/
+package-lock.json
+
+# PYTHON
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.venv
+*.egg-info
+
+# VSCODE Config
+.vscode/
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
