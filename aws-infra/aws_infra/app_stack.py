@@ -24,7 +24,7 @@ class QuestAppStack(Stack):
             synth=cpl.ShellStep(
                 "Synth",
                 input=cpl.CodePipelineSource.code_commit(
-                    QuestMonorepo, branch="master"
+                    QuestMonorepo, branch="main"
                 ),
                 commands=[
                     "python -m pip install -r requirements.txt",
