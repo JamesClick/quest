@@ -50,7 +50,7 @@ class QuestAppStack(Stack):
             "QuestWebServer",
             task_image_options=ecsPatterns.ApplicationLoadBalancedTaskImageOptions(
                 # See https://github.com/aws/aws-cdk/issues/3899#issuecomment-580394612
-                image=ecs.ContainerImage.from_asset(".."),
+                image=ecs.ContainerImage.from_asset("."),
                 container_port=3000,
                 environment=envVars,
             ),
