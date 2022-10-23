@@ -21,6 +21,8 @@ class QuestAppStack(Stack):
             self,
             "QuestAppPipeline",
             pipeline_name="app-quest-pipeline",
+            docker_enabled_for_self_mutation=True,
+            docker_enabled_for_synth=True,
             synth=cpl.ShellStep(
                 "Synth",
                 input=cpl.CodePipelineSource.code_commit(
