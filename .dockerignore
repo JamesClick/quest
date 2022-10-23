@@ -1,0 +1,2 @@
+# Needed in order to allow docker build at synth time to not catch fire.
+cdk.out/
