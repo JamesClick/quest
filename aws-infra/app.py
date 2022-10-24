@@ -7,8 +7,10 @@ from aws_infra.app_stack import QuestAppStack
 
 
 app = cdk.App()
-QuestAppStack(app, "QuestAppStack",
-        env=cdk.Environment(account="056389583808", region="us-west-1")
-    )
+QuestAppStack(
+    app,
+    "QuestAppStack",
+    env=cdk.Environment(account="056389583808", region="us-west-1"),
+)
 
 app.synth()
