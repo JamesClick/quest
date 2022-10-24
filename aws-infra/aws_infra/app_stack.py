@@ -13,10 +13,6 @@ class QuestAppStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
 
-        QuestMonorepo = ccm.Repository(
-            self, "QuestMonorepo", repository_name="quest-monorepo"
-        )
-
         AppMonoPipeline = cpl.CodePipeline(
             self,
             "QuestAppPipeline",
@@ -27,7 +23,7 @@ class QuestAppStack(Stack):
                 "Synth",
                 input=cpl.CodePipelineSource.connection(
                     "JamesClick/quest", "master", connection_arn="arn:aws:codestar-connections:us-west-1:056389583808:connection/f67183aa-909c-44bd-b331-6150e2489b51"
-                )
+                ),
                 commands=[
                     "python -m pip install -r requirements.txt",
                     "npx aws-cdk synth",
