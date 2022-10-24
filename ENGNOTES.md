@@ -2,7 +2,8 @@
 
 ## 2022 OCT 22 @ssrc - TODO
 ---
- - (1) Implement WebApp Pipeline
+ - ~~(1) Implement WebApp Pipeline~~ Implemented
+ - ~~(2) Migrate repository to GitHub~~ Implemented
  - (3) CDK unittests
  - (3) Continuous Testing
     - Depends on CDK/WebApp unittests
