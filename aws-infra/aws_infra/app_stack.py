@@ -25,9 +25,9 @@ class QuestAppStack(Stack):
             docker_enabled_for_synth=True,
             synth=cpl.ShellStep(
                 "Synth",
-                input=cpl.CodePipelineSource.code_commit(
-                    QuestMonorepo, branch="main"
-                ),
+                input=cpl.CodePipelineSource.connection(
+                    "JamesClick/quest", "master", connection_arn="arn:aws:codestar-connections:us-west-1:056389583808:connection/f67183aa-909c-44bd-b331-6150e2489b51"
+                )
                 commands=[
                     "python -m pip install -r requirements.txt",
                     "npx aws-cdk synth",
