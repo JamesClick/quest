@@ -1,7 +1,7 @@
 # A quest in the clouds
 
 ### Submitted Assets
- - Repo: [https://github.com/JamesClick/quest/](https://github.com/JamesClick/quest/tree/master/aws-infra) (IaC is under `aws-infra/` subdir)
+ - Repo: [https://github.com/JamesClick/quest/](https://github.com/JamesClick/quest/) (IaC is under `aws-infra/` subdir)
  - Hosted Quest Webapp: [https://app.quest.jamesclick.net/](https://app.quest.jamesclick.net/)
  - Screenshot of hosted Quest webapp: ![Screenshot of Quest Webapp as documented proof](quest-proof.jpg)
   - Given more time, I would improve:
